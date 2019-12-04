@@ -1,128 +1,89 @@
 import pyxel
+from mario import *
+from peach import *
+from plataformas import *
+from escaleras import *
+from monofurioso import *
 
 WIDTH = 224
 HEIGHT = 256
-x = 200
-y = 230
 
 CAPTION = "Donkey Kong Game!"
 pyxel.init(WIDTH, HEIGHT, caption=CAPTION)
 pyxel.load("assets.pyxres")
 
-class Mario:
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-    def getX(self):
-        return self.x
-    def getY (self):
-        return self.y
 
-    def marioAppear(self):
-        pyxel.blt(x, y, 1, 16, 0, -15, 16, colkey=0)
+mario = Mario()
 
-    def drawMarioRight(self,x,y):
-        pyxel.blt(x, y, 1, 16, 0, -15, 16, colkey=0)
-    def drawMarioLeft(self,x,y):
-        pyxel.blt(x, y, 1, 16, 0, 15, 16, colkey=0)
-
-mario = Mario(y, y)
-
-def platInferior(x, y):
-    o = 1
-    for i in range(14):
-        if (i > 6):
-            pyxel.blt(x + i * 16, y - o, 1, 0, 0, 16, 8)
-            o += 1
-        else:
-            pyxel.blt(x + i * 16, y, 1, 0, 0, 16, 8)
-def platDecreciente(x, y):
-    for i in range(13):
-        pyxel.blt(x + i * 16, y + i, 1, 0, 0, 16, 8)
-def platCreciente(x, y):
-    for i in range(13):
-        pyxel.blt(x + i * 16, y - i, 1, 0, 0, 16, 8)
-def platSuperior(x, y):
-    o = 1
-    for i in range(13):
-        if (i > 8):
-            pyxel.blt(x + i * 16, y + o, 1, 0, 0, 16, 8)
-            o += 1
-        else:
-            pyxel.blt(x + i * 16, y, 1, 0, 0, 16, 8)
-def platPeach(x, y):
-    o = 0
-    for i in range(3):
-        pyxel.blt(x + o * 16, y, 1, 0, 0, 16, 8)
-        o += 1
-def escalera(x, y, h):
-    for i in range(h):
-        pyxel.blt(x, y - 4 - i * 4, 1, 0, 8, 8, 4)
 
 def move(x, y):
+    print(x,y)
     if pyxel.btn(pyxel.KEY_RIGHT):
         x = x + 1
-        mario.drawMarioRight(x,y)
+        mario.marioAppear = True
     elif pyxel.btn(pyxel.KEY_LEFT):
         x = x - 1
-        mario.drawMarioLeft(x,y)
+        mario.marioAppear = False
+
+    # Programar cuando vayamos a hacer escaleras
     elif pyxel.btn(pyxel.KEY_UP):
-        y = y - 1
+        y = y - 3
     elif pyxel.btn(pyxel.KEY_DOWN):
         y = y + 1
+
+    # Comprobar si choca con la plataforma inferior
+    if len(listaPlat[0]) > x//16 and y >= listaPlat[0][x//16]:
+        y = listaPlat[0][x//16]
+
+    # Comprobar si choca con la plataforma creciente1
+    elif len(listaPlat[1]) > x//16 and (listaPlat[1][x//16]+3 >= y >= listaPlat[1][x//16]): #Creciente
+        y = listaPlat[1][x//16]
+    # Comprobar si choca con la plataforma decreciente1
+    elif len(listaPlat[2]) > x//16 and (listaPlat[2][x//16]+3 >= y >= listaPlat[2][x//16]): #Decreciente
+        y = listaPlat[2][x//16]
+
+    # Comprobar si choca con la plataforma superior
+    elif len(listaPlat[3]) > x//16 and (listaPlat[3][x//16]+3 >= y >= listaPlat[3][x//16]): #
+        y = listaPlat[3][x//16]
+
+    # Comprobar si choca con la plataforma creciente2
+    elif len(listaPlat[4]) > x // 16 and (listaPlat[4][x // 16] + 3 >= y >= listaPlat[4][x // 16]):
+        y = listaPlat[4][x // 16]
+
+    # Comprobar si choca con la plataforma decrecinte2
+    elif len(listaPlat[5]) > x // 16 and (listaPlat[5][x // 16] + 3 >= y >= listaPlat[5][x // 16]):  # Superior
+        y = listaPlat[5][x // 16]
+
+    y += 1
+
     return x, y
+
 
 def update():
     global x, y
     if pyxel.btnp(pyxel.KEY_Q):
         pyxel.quit()
     else:
-        x,y = move(x,y)
-
-
-def drawEscaleras():
-    escalera(64, 84, 14)
-    escalera(80, 84, 14)
-    escalera(128, 84, 5)
-    escalera(88, 96, 1)
-    escalera(88, 120, 4)
-    escalera(32, 144, 4)
-    escalera(72, 148, 6)
-    escalera(64, 160, 2)
-    escalera(64, 184, 2)
-    escalera(32, 212, 5)
-    escalera(80, 248, 2)
-    escalera(80, 224, 1)
-    escalera(96, 216, 7)
-    escalera(112, 184, 7)
-    escalera(184, 244, 5)
-    escalera(184, 180, 5)
-    escalera(168, 152, 2)
-    escalera(168, 128, 2)
-    escalera(184, 112, 5)
-def drawPlataformas():
-    # Plataformas
-    platInferior(0, 248)
-    platDecreciente(0, 208)
-    platCreciente(16, 187)
-    platDecreciente(0, 142)
-    platCreciente(16, 121)
-    platSuperior(0, 84)
-    platPeach(88, 56)
-
+        mario.x,mario.y = move(mario.x,mario.y)
 
 
 def draw():
     global x,y
-    ##################
-    pyxel.cls(3)
+    pyxel.cls(0)
+
     drawEscaleras()
     drawPlataformas()
-    ##################
 
-    x,y = move(x,y)
-    mario.marioAppear()
+    peach = Peach(88,56)
+    peach.drawPeach()
 
+    monoFurioso = MonoFurioso(10,53)
+    monoFurioso.drawMonoFurioso()
 
+    mario.x,mario.y = move(mario.x,mario.y)
+    if (mario.marioAppear):
+        mario.drawMarioRight(mario.x,mario.y)
+    elif (not mario.marioAppear):
+        mario.drawMarioLeft(mario.x,mario.y)
 
 pyxel.run(update, draw)

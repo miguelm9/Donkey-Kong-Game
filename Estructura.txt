@@ -1,3 +1,0 @@
-Diseñar todos los objetos en el banco de imagenes
-Crear las clases para Donkey, Mario y las plataformas
-Crear los métodos para Donkey (barriles), Mario (moverse) y plataformas (añadir el peso y que no se traspase)
