@@ -20,7 +20,6 @@ barriles = []
 
 
 def update():
-    print(mario.saltar)
     global x, y, barriles
     for i in range(10):
         if pyxel.frame_count == 60 * i:
@@ -36,38 +35,52 @@ def update():
             pass
         else:
             barriles[i].x, barriles[i].y = barriles[i].moveBarril(barriles[i].x, barriles[i].y)
-            print(barriles[i], barriles[i].x, barriles[i].y)
 
 def draw():
 
     global x,y, barriles
-    pyxel.cls(0)
 
-    for i in range(len(escaleras)):
-        escaleras[i].drawEscalera()
+    if (not mario.vivo):
+        pyxel.rect(0,0,256,260,0)
+        pyxel.text(70,110,"GAME OVER",3)
+        pyxel.text(70,117,"Insert Coin To Continue",3)
 
-    drawBarrilesQuietos()
-    drawPlataformas()
+    elif(mario.wins):
+        pyxel.rect(0, 0, 256, 260, 0)
+        pyxel.text(70, 110, "NIVEL SUPERADO", 3)
+        pyxel.text(70, 117, "Insert Coin To Continue", 3)
 
-    peach = Peach(88,56)
-    peach.drawPeach()
+    else:
+        pyxel.cls(0)
 
-    monoFurioso = MonoFurioso(64,84)
-    monoFurioso.drawMonoFurioso()
+        pyxel.rect(158,4,150,10,3)
+        pyxel.text(220, 6, str(mario.vidas), 6)
+        pyxel.text(160,6,"Vidas de Mario: ",6)
 
-    for i in range(len(barriles)):
-        if len(barriles) == 0:
-            pass
-        elif pyxel.frame_count >= 60*i:
-            barriles[i].drawBarril(barriles[i].x-12,barriles[i].y-10)
-            barriles[i].x, barriles[i].y = barriles[i].moveBarril(barriles[i].x, barriles[i].y)
+        for i in range(len(escaleras)):
+            escaleras[i].drawEscalera()
 
+        drawBarrilesQuietos()
+        drawPlataformas()
 
-    mario.x,mario.y = mario.move(mario.x,mario.y,barriles, escaleras)
-    if (mario.marioAppear):
-        mario.drawMarioRight(mario.x,mario.y)
-    elif (not mario.marioAppear):
-        mario.drawMarioLeft(mario.x,mario.y)
+        peach = Peach(88,56)
+        peach.drawPeach()
+
+        monoFurioso = MonoFurioso(64,84)
+        monoFurioso.drawMonoFurioso()
+
+        for i in range(len(barriles)):
+            if len(barriles) == 0:
+                pass
+            elif pyxel.frame_count >= 60*i:
+                barriles[i].drawBarril(barriles[i].x-12,barriles[i].y-10)
+                barriles[i].x, barriles[i].y = barriles[i].moveBarril(barriles[i].x, barriles[i].y)
+
+        mario.x,mario.y = mario.move(mario.x,mario.y,barriles, escaleras)
+        if (mario.marioAppear):
+            mario.drawMarioRight(mario.x,mario.y)
+        elif (not mario.marioAppear):
+            mario.drawMarioLeft(mario.x,mario.y)
 
 
 pyxel.run(update, draw)
