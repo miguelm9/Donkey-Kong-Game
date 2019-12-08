@@ -7,6 +7,8 @@ from peach import *
 mono = MonoFurioso(64,84)
 peach = Peach(88,56)
 
+barrilesDescartados = []
+
 class Mario:
     def __init__(self):
         self.x = 4
@@ -18,6 +20,7 @@ class Mario:
         self.vidas = 3
         self.vivo = True
         self.wins = False
+        self.puntos = -100
 
 
     def getX(self):
@@ -30,18 +33,18 @@ class Mario:
         pyxel.blt(x-8, y-16, 1, 16, 0, 15, 16, colkey=0)
 
     def muerteMario(self):
-
         x,y = 4,240
         self.marioAppear = True
 
         return x,y
 
-
     def move(self,x, y, barriles, escaleras):
 
-        print("Mario:", x,y)
-        print("Peach :",peach.x,peach.y)
-        print("\n")
+        if x >= 220:
+            x = 220
+        if x<=2:
+            x= 2
+
         if peach.x+25 >= x >= peach.x-10 and peach.y == y:
             self.wins = True
 
@@ -49,9 +52,13 @@ class Mario:
             if len(barriles) == 0:
                 pass
             elif ((barriles[i].x + 6 >= x >= barriles[i].x - 6) and (barriles[i].y +5 >= y >= barriles[i].y-5)):
-                print("DADO HIJO DE PUTA")
+                pass
                 self.quedanVidas()
                 return self.muerteMario()
+            elif (barriles[i].y > y and not barrilesDescartados.__contains__(barriles[i])):
+                print(self.puntos)
+                self.puntos += 100
+                barrilesDescartados.append(barriles[i])
 
 
         if pyxel.btn(pyxel.KEY_RIGHT):
@@ -75,6 +82,7 @@ class Mario:
             for i in range(len(escaleras)):
                 if escaleras[i].x < x < escaleras[i].x+8: #and escaleras[i].y+escaleras[i].h*4+8 < y+16 < escaleras[i].y+8: #Las 3 escaleras largas del centro no funcionan.
                     y -= 1
+
         # elif pyxel.btn(pyxel.KEY_DOWN):
             # y = y + 1
 

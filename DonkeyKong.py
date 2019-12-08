@@ -40,22 +40,43 @@ def draw():
 
     global x,y, barriles
 
+
+
     if (not mario.vivo):
         pyxel.rect(0,0,256,260,0)
         pyxel.text(70,110,"GAME OVER",3)
         pyxel.text(70,117,"Insert Coin To Continue",3)
-
     elif(mario.wins):
         pyxel.rect(0, 0, 256, 260, 0)
         pyxel.text(70, 110, "NIVEL SUPERADO", 3)
         pyxel.text(70, 117, "Insert Coin To Continue", 3)
-
     else:
         pyxel.cls(0)
 
+
+        if (mario.vidas == 3):
+            pyxel.blt(10, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+            pyxel.blt(20, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+            pyxel.blt(30, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+        elif (mario.vidas == 2):
+            pyxel.blt(10, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+            pyxel.blt(20, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+        elif(mario.vidas == 1):
+            pyxel.blt(10, 10, 0, 131, 8, 8, 8)  # Imagen vidas de mario
+        else:
+            pass
+        
+        '''
         pyxel.rect(158,4,150,10,3)
         pyxel.text(220, 6, str(mario.vidas), 6)
         pyxel.text(160,6,"Vidas de Mario: ",6)
+        '''
+        pyxel.blt(165, 28, 0, 181, 100, 43, 19)
+
+        if (mario.puntos == -100):
+            pyxel.text(185, 37, "0", 6)
+        else:
+            pyxel.text(182, 37, str(mario.puntos), 6)
 
         for i in range(len(escaleras)):
             escaleras[i].drawEscalera()

@@ -1,5 +1,6 @@
 import pyxel
 from plataformas import *
+from mario import *
 
 class BarrilesRodando():
     def __init__(self):
@@ -15,6 +16,7 @@ class BarrilesRodando():
         if(x < 0):
             x = 68
             y = 82
+            barrilesDescartados.remove(self)
 
         # Comprobar si choca con la plataforma inferior
         elif len(listaPlat[0]) > x // 16 and y >= listaPlat[0][x // 16]:
