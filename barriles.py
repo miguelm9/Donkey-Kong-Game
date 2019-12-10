@@ -54,8 +54,16 @@ class BarrilesRodando():
         return x,y
 
 
-def drawBarrilesQuietos():
-    pyxel.blt(0,84-32,0,12,103,10,16, colkey=0)
-    pyxel.blt(10,84-32,0,12,103,10,16, colkey=0)
-    pyxel.blt(0,84-16,0,12,103,10,16, colkey=0)
-    pyxel.blt(10,84-16,0,12,103,10,16, colkey=0)
+    def drawBarrilesQuietos(self):
+        pyxel.blt(0,84-32,0,12,103,10,16, colkey=0)
+        pyxel.blt(10,84-32,0,12,103,10,16, colkey=0)
+        pyxel.blt(0,84-16,0,12,103,10,16, colkey=0)
+        pyxel.blt(10,84-16,0,12,103,10,16, colkey=0)
+
+    def barrilesAppear(self, barriles):
+        for i in range(len(barriles)):
+            if len(barriles) == 0:
+                continue
+            elif pyxel.frame_count >= 60 * i:
+                barriles[i].drawBarril(barriles[i].x - 12, barriles[i].y - 10)
+                barriles[i].x, barriles[i].y = barriles[i].moveBarril(barriles[i].x, barriles[i].y)
